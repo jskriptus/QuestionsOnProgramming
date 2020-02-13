@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Тесты">
+    <title>Тесты HTML\CSS\JS</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- <header></header> -->
+    <main>
+        <div class="container">
+            <div class="main-content">
+                <div class="question">
+                    <h2>Какой css-селектор отвечает за цвет заливки?</h2>
+                </div>
+                <div class="answers">
+                    <div class="answer">
+                        <input type="radio" name="field" id="rd1">
+                        <label>color</label>
+                    </div>
+                    <div class="answer">
+                        <input type="radio" name="field" id="rd1">
+                        <label>bg-color</label>
+                    </div>
+                    <div class="answer">
+                        <input type="radio" name="field" id="rd1">
+                        <label>background-color</label>
+                    </div>
+                    <div class="answer">
+                        <input type="radio" name="field" id="rd1">
+                        <label>fill-color</label>
+                    </div>
+                </div>
+                <button type="submit" class="submitAnswer">Ответить</button>
+            </div>
+            <div class="controlPanel">
+                <span class="topicTest">Темы: </span>
+                <div class="leng">
+                    <div class="lengCSS">
+                        <input type="checkbox" name="checkbox" id="checkbox"> <span>CSS</span>
+                    </div>
+                    <div class="lengJS">
+                        <input type="checkbox" name="checkbox" id="checkbox"> <span>JS</span>
+                    </div>
+                    <div class="lengHTML">
+                        <input type="checkbox" name="checkbox" id="checkbox"> <span>HTML5</span>
+                    </div>
+                </div>
+                <div class="countQuestion">
+                    <input type="range" id="rng" name="rng" value="1" step="1" min="1" max="100" onchange="document.getElementById('rangeValue').innerHTML = this.value;">
+                    <p>Колличество вопросов: <output id="rangeValue">1</output></p>
+                </div>
+                <button type="submit" class="generateQuestions">Генерировать</button>
+            </div>
+        </div>
+    </main>
+    <!-- <footer></footer> -->
+    <script src="js/js.js"></script>
+</body>
+</html>

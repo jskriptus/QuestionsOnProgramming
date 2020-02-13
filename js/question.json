@@ -1,0 +1,23 @@
+
+{"questions":[
+    {
+    "id": 1,
+    "question": "Какой css-селектор отвечает за цвет заливки?",
+    "answer1": "color",
+    "answer2": "bg-color",
+    "answer3": "background-color",
+    "answer4": "fill-color",
+    "rightAnswer": 3,
+    "type": "css"
+    },
+    {
+    "id": 2,
+    "question": "Какой метод массива используется для преобразования элементов массива?",
+    "answer1": "map",
+    "answer2": "reduce",
+    "answer3": "filter",
+    "answer4": "forEach",
+    "rightAnswer": 1,
+    "type": "es6"
+    }
+]}
