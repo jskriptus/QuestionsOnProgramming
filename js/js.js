@@ -5,119 +5,79 @@ const rangeValue = document.querySelector('#rangeValue'); // Вывод колл
 const questionTitle = document.querySelector('.question');
 const answers = document.querySelectorAll('.answer');
 const generateQuestionsBtn = document.querySelector('.generateQuestions');
-const mainContent = document.querySelector('.main-content');
-const mainPreview = document.querySelector('.mainPreview');
-const controlPanel = document.querySelector('.controlPanel');
-const resultationPanel = document.querySelector('.resultationPanel');
+const mainScreen = document.querySelector('.mainScreen');
+const startScreen = document.querySelector('.startScreen');
 const resultOfMan = document.querySelector('.resultOfMan');
 
-const questions = [
-     {
-          id: 0,
-          question: "Какой css-селектор отвечает за цвет заливки?",
-          answers: {
-               0: "color",
-               1: "bg-color",
-               2: "background-color",
-               3: "fill-color"
-          },
-          rightAnswer: 'background-color',
-          type: "css"
-     },
-     {
-          id: 1,
-          question: "Какой метод массива используется для преобразования элементов массива?",
-          answers: {
-               0: "map",
-               1: "reduce",
-               2: "filter",
-               3: "forEach"
-          },
-          rightAnswer: "map",
-          type: "es6"
-     },
-     {
-          id: 2,
-          question: "Какой метод массива используется для преобразования элементов массива?",
-          answers: {
-               0: "map",
-               1: "reduce",
-               2: "filter",
-               3: "forEach"
-          },
-          rightAnswer: "map",
-          type: "es6"
-     }
-];
+const checkboxLangCSS = document.querySelector("#checkboxLangCSS");
+const checkboxLangJS = document.querySelector("#checkboxLangJS");
+const checkboxLangHTML = document.querySelector("#checkboxLangHTML");
+
 // Записываем колличество правильных ответов
 let result = 0;
 
-     // Какой вопрос из массива обрабатывается
-     let questionId = 0;
+// Какой вопрос из массива обрабатывается
+let questionId = 0;
 
-     function changeAnswers() {
-          for (let i = 0; i < answers.length; i++) {
-               if (questions[questionId] === undefined) {
-                    window.location.reload(true);
+let filteredQuestions;
+
+function changeAnswers() {
+     if (questionId === 0) {
+          filteredQuestions = questions.filter(item => {
+               if (item.type === "css" && checkboxLangCSS.checked) {
+                    return true;
+               } else if (item.type === "es6" && checkboxLangJS.checked) {
+                    return true;
+               } else if (item.type === "html" && checkboxLangHTML.checked) {
+                    return true; 
                } else {
-                    answers[i].textContent = questions[questionId].answers[i];
-                    questionTitle.textContent = questions[questionId].question;
+                    return false;
                }
-
-          }
-          
+          });
      }
 
-     // При нажатии на кнопку Генерировать 
-     generateQuestionsBtn.addEventListener('click', () => {
-          
-          // скрывать Начальный блок и показывать блок с Вопросом и ответами
-          mainPreview.style.display = 'none';
-          mainContent.style.display = 'inline-block';
-          changeAnswers();
-          // Убираем панель настройки вопросов и добавляем результат ответов на вопросы
-          controlPanel.style.display = 'none';
-          resultOfMan.style.display = 'block';
-          
+     if (filteredQuestions[questionId] === undefined) {
+          alert(`Правильных ответов: ${result}`)
+          return window.location.reload(true);
+     }
+
+     questionTitle.textContent = filteredQuestions[questionId].question;
+
+     answers.forEach((item, index) => {
+          item.textContent = filteredQuestions[questionId].answers[index];
+          item.style.backgroundColor = '';
      });
 
-     
-          
-          for (let i = 0; i < answers.length; i++){
-               answers[i].addEventListener('click', (event) => {
-                    if (event.target.textContent === questions[questionId].rightAnswer) {
-                         ++questionId;
-                         resultOfMan.textContent = `Правильных ответов: ${++result}`;
-                         event.target.style.backgroundColor = 'green';
-                         
-                         setTimeout(changeAnswers, 1000);
-                         
-                    } else {
-                         questionId++;
-                         event.target.style.backgroundColor = 'red';
-                         changeAnswers();
-                    }
-               });
+     // for (let i = 0; i < answers.length; i++) {
+     // answers[i].textContent = questions[questionId].answers[i];
+     // answers[i].style.backgroundColor = '';
+     // }
+}
+
+// При нажатии на кнопку Генерировать 
+generateQuestionsBtn.addEventListener('click', () => {
+     startScreen.style.display = 'none';
+     mainScreen.style.display = 'flex';
+     changeAnswers();
+});
+
+for (let i = 0; i < answers.length; i++) {
+     answers[i].addEventListener('click', (event) => {
+          if (event.target.textContent === filteredQuestions[questionId].rightAnswer) {
+               ++questionId;
+               resultOfMan.textContent = `Правильных ответов: ${++result}`;
+               event.target.style.backgroundColor = 'green';
+               setTimeout(changeAnswers, 500);
+          } else {
+               questionId++;
+               event.target.style.backgroundColor = 'red';
+               setTimeout(changeAnswers, 500);
           }
+     });
+}
 
 
 // При изменении значения value ползунка range, данные value передаются в output .
 const changeRangeValue = () => {
      rangeValue.value = range.value;
-};  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
