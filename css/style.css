@@ -10,10 +10,13 @@ body {
 
 }
 
+.startScreen {
+    display: flex;
+}
+
 .mainPreview {
     display: block;
     width: 65%;
-    height: 65%;
     padding: 25px;
     margin-right: 20px;
     border-radius: 15px;
@@ -22,10 +25,15 @@ body {
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
-.main-content {
+.mainScreen {
     display: none;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.main-content {
     width: 65%;
-    height: 65%;
     padding: 25px;
     margin-right: 20px;
     border-radius: 15px;
@@ -35,7 +43,6 @@ body {
 }
 
 .questionTitle {
-    width: 800px;
     justify-content: center;
     text-align: center;
 }
@@ -88,9 +95,6 @@ body {
     margin-top: 25px;
 }
 
-.resultOfMan {
-    display: none;
-}
 
 input[type=range] {
     -webkit-appearance: none;
