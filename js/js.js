@@ -1,60 +1,108 @@
 'use strict';
 
-const range = document.querySelector('#rng'); // Ползунок который меняет колличество вопросов
-const rangeValue = document.querySelector('#rangeValue'); // Вывод колличества вопросов
-const questionTitle = document.querySelector('.question');
-const answers = document.querySelectorAll('.answer');
-const generateQuestionsBtn = document.querySelector('.generateQuestions');
-const mainScreen = document.querySelector('.mainScreen');
-const startScreen = document.querySelector('.startScreen');
-const resultOfMan = document.querySelector('.resultOfMan');
+const range = document.querySelector('#rng'), // Ползунок который меняет колличество вопросов
+     rangeValue = document.querySelector('#rangeValue'), // Вывод колличества вопросов
+     questionTitle = document.querySelector('.question'),
+     answers = document.querySelectorAll('.answer'),
+     generateQuestionsBtn = document.querySelector('.generateQuestions'),
+     mainScreen = document.querySelector('.mainScreen'),
+     startScreen = document.querySelector('.startScreen'),
+     plusResultText = document.querySelector('.plusResult'),
+     minusResultText = document.querySelector('.minusResult'),
+     hint = document.querySelector('.hint'),
+     infoHint = document.querySelector('.infoHint'),
+     nextQuestion = document.querySelector('.nextQuestion'),
 
-const checkboxLangCSS = document.querySelector("#checkboxLangCSS");
-const checkboxLangJS = document.querySelector("#checkboxLangJS");
-const checkboxLangHTML = document.querySelector("#checkboxLangHTML");
+     form = document.querySelector('form'),
+
+     checkboxLangCSS = document.querySelector("#checkboxLangCSS"),
+     checkboxLangJS = document.querySelector("#checkboxLangJS"),
+     checkboxLangHTML = document.querySelector("#checkboxLangHTML");
 
 // Записываем колличество правильных ответов
-let result = 0;
+let plusResult = 0;
+
+// Записываем колличество не правильных ответов
+let minusResult = 0;
 
 // Какой вопрос из массива обрабатывается
 let questionId = 0;
 
-let filteredQuestions;
+// Храним отфильтрованые вопросы
+let filterQuestions;
 
-function changeAnswers() {
-     if (questionId === 0) {
-          filteredQuestions = questions.filter(item => {
-               if (item.type === "css" && checkboxLangCSS.checked) {
-                    return true;
-               } else if (item.type === "es6" && checkboxLangJS.checked) {
-                    return true;
-               } else if (item.type === "html" && checkboxLangHTML.checked) {
-                    return true; 
-               } else {
-                    return false;
-               }
-          });
+
+form.addEventListener('change', (e) => {
+     let target = e.target;
+     if (target.tagName === 'INPUT') {
+          addToLocal(target);
      }
+});
 
-     if (filteredQuestions[questionId] === undefined) {
-          alert(`Правильных ответов: ${result}`)
-          return window.location.reload(true);
-     }
+let obj = {
+     question: "",
 
-     questionTitle.textContent = filteredQuestions[questionId].question;
-
-     answers.forEach((item, index) => {
-          item.textContent = filteredQuestions[questionId].answers[index];
-          item.style.backgroundColor = '';
-     });
-
-     // for (let i = 0; i < answers.length; i++) {
-     // answers[i].textContent = questions[questionId].answers[i];
-     // answers[i].style.backgroundColor = '';
-     // }
 }
 
-// При нажатии на кнопку Генерировать 
+const addToLocal = (input) => {
+     if (input.id === 'question') {
+          return obj.question = input.value;
+     } else if (input.id === 'answer_one') {
+          return localStorage.setItem('answers', input.value);
+     } else if (input.id === 'answer_two') {
+          return localStorage.setItem('answers', input.value);
+     } else if (input.id === 'answer_three') {
+          return localStorage.setItem('answers', input.value);
+     }
+};
+
+console.log(obj);
+
+// localStorage.setItem('questions', JSON.stringify(questions));
+// let storageQuestions = JSON.parse(localStorage.getItem("questions"));
+// console.log(storageQuestions);
+
+
+
+const filteredQuestions = () => {
+     filterQuestions = questions.filter(item => {
+          const checkedCheckboxCSS = (item.type === "css" && checkboxLangCSS.checked);
+          const checkedCheckboxJS = (item.type === "es6" && checkboxLangJS.checked);
+          const checkedCheckboxHTML = (item.type === "html" && checkboxLangHTML.checked);
+
+          if (checkedCheckboxCSS || checkedCheckboxJS || checkedCheckboxHTML) {
+               return true;
+          } else {
+               return false;
+          }
+     });
+};
+
+
+
+function changeAnswers() {
+
+     filteredQuestions();
+
+     if (filterQuestions[questionId] === undefined) {
+          if (plusResult === 0 && minusResult === 0) {
+               return window.location.reload();
+          } else {
+               alert(`Правильных ответов: ${plusResult} \nНеправильных ответов: ${minusResult} `);
+               return window.location.reload();
+          }
+     }
+
+     questionTitle.textContent = filterQuestions[questionId].question;
+
+     answers.forEach((item, index) => {
+          item.textContent = filterQuestions[questionId].answers[index];
+          item.style.backgroundColor = '';
+          hint.style.display = 'none';
+     });
+}
+
+// При нажатии на кнопку Генерировать скрывать стартовую страницу и показывать основную
 generateQuestionsBtn.addEventListener('click', () => {
      startScreen.style.display = 'none';
      mainScreen.style.display = 'flex';
@@ -63,19 +111,21 @@ generateQuestionsBtn.addEventListener('click', () => {
 
 for (let i = 0; i < answers.length; i++) {
      answers[i].addEventListener('click', (event) => {
-          if (event.target.textContent === filteredQuestions[questionId].rightAnswer) {
-               ++questionId;
-               resultOfMan.textContent = `Правильных ответов: ${++result}`;
+          if (event.target.textContent === filterQuestions[questionId].rightAnswer) {
+               plusResultText.textContent = `Правильных ответов: ${++plusResult} `;
                event.target.style.backgroundColor = 'green';
-               setTimeout(changeAnswers, 500);
-          } else {
                questionId++;
+          } else {
+               minusResultText.textContent = `Неправильных ответов: ${++minusResult}`;
                event.target.style.backgroundColor = 'red';
-               setTimeout(changeAnswers, 500);
+               hint.style.display = 'block';
+               infoHint.textContent = filterQuestions[questionId].hint;
+               questionId++;
           }
      });
 }
 
+nextQuestion.addEventListener('click', changeAnswers);
 
 // При изменении значения value ползунка range, данные value передаются в output .
 const changeRangeValue = () => {

@@ -5,24 +5,47 @@ body {
 
 .container {
     display: flex;
-    width: 100%;
     min-width: 1250px;
+    min-height: 350px;
 
 }
 
 .startScreen {
     display: flex;
+    padding: 25px;
+    margin-right: 20px;
 }
 
 .mainPreview {
-    display: block;
-    width: 65%;
-    padding: 25px;
-    margin-right: 20px;
+    width: 700px;
+    height: 430px;
     border-radius: 15px;
     -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.addNewQuestion {
+    width: 25%;
+    display: block;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.addNewQuestion span {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.addNewQuestion select {
+    border-radius: 5px;
+    width: 100%;
+    height: 25px;
+}
+
+#addNewQuestion__input {
+    border-radius: 5px;
 }
 
 .mainScreen {
@@ -35,7 +58,6 @@ body {
 .main-content {
     width: 65%;
     padding: 25px;
-    margin-right: 20px;
     border-radius: 15px;
     -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
@@ -82,12 +104,28 @@ body {
     cursor: pointer;
 }
 
+.newQuestion {
+    display: flex;
+    margin: 0 auto;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
 .controlPanel {
     display: block;
-    width: 20%;
+    width: 300px;
     font-size: 10px;
     margin-top: 25px;
+    padding: 25px;
 }
+
+
 
 .result {
     display: none;
@@ -123,6 +161,48 @@ input[type='range']::-webkit-slider-thumb {
     margin-top: 10px;
 }
 
+.nextQuestion {
+    display: flex;
+    margin: 0 auto;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .topicTest {
     font-weight: bold;
+}
+
+.resultationPanel {
+    margin-left: 20px;
+}
+
+.hint {
+    display: none;
+    margin: 10px;
+    padding: 25px;
+    border-radius: 15px;
+    background-color: PapayaWhip;
+    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.iconHint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    margin-bottom: 10px;
+}
+
+.infoHint {
+    display: flex;
+
 }
