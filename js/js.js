@@ -22,7 +22,7 @@ const range = document.querySelector('#rng'), // Ползунок который
 // Записываем колличество правильных ответов
 let plusResult = 0;
 
-// Записываем колличество не правильных ответов
+// Записываем колличество неправильных ответов
 let minusResult = 0;
 
 // Какой вопрос из массива обрабатывается
@@ -31,43 +31,31 @@ let questionId = 0;
 // Храним отфильтрованые вопросы
 let filterQuestions;
 
+// Преобразуем полученные из базы вопросы, в удобный формат
+const questions = questionsFromDB.map((item) => {
 
-form.addEventListener('change', (e) => {
-     let target = e.target;
-     if (target.tagName === 'INPUT') {
-          addToLocal(target);
-     }
+     // Тут мы оборачиваем все ответы в объект
+     const modifyItem = {
+          ...item,
+          rightAnswer: item.right_answer,
+          answers: {
+               1: item.answer_one,
+               2: item.answer_two,
+               3: item.answer_three,
+               4: item.answer_four,
+          }
+     };
+
+     // Тут мы избавляемся от старых ответов, не обернутых в объект
+     const { answer_one, answer_two, answer_three, answer_four, right_answer, ...newItem } = modifyItem;
+
+     return newItem;
 });
-
-let obj = {
-     question: "",
-
-}
-
-const addToLocal = (input) => {
-     if (input.id === 'question') {
-          return obj.question = input.value;
-     } else if (input.id === 'answer_one') {
-          return localStorage.setItem('answers', input.value);
-     } else if (input.id === 'answer_two') {
-          return localStorage.setItem('answers', input.value);
-     } else if (input.id === 'answer_three') {
-          return localStorage.setItem('answers', input.value);
-     }
-};
-
-console.log(obj);
-
-// localStorage.setItem('questions', JSON.stringify(questions));
-// let storageQuestions = JSON.parse(localStorage.getItem("questions"));
-// console.log(storageQuestions);
-
-
 
 const filteredQuestions = () => {
      filterQuestions = questions.filter(item => {
           const checkedCheckboxCSS = (item.type === "css" && checkboxLangCSS.checked);
-          const checkedCheckboxJS = (item.type === "es6" && checkboxLangJS.checked);
+          const checkedCheckboxJS = (item.type === "js" && checkboxLangJS.checked);
           const checkedCheckboxHTML = (item.type === "html" && checkboxLangHTML.checked);
 
           if (checkedCheckboxCSS || checkedCheckboxJS || checkedCheckboxHTML) {
@@ -77,8 +65,6 @@ const filteredQuestions = () => {
           }
      });
 };
-
-
 
 function changeAnswers() {
 
@@ -95,12 +81,12 @@ function changeAnswers() {
 
      questionTitle.textContent = filterQuestions[questionId].question;
 
-     answers.forEach((item, index) => {
-          item.textContent = filterQuestions[questionId].answers[index];
+     answers.forEach((item) => {
+          item.textContent = filterQuestions[questionId].answers[item.id];
           item.style.backgroundColor = '';
           hint.style.display = 'none';
      });
-}
+};
 
 // При нажатии на кнопку Генерировать скрывать стартовую страницу и показывать основную
 generateQuestionsBtn.addEventListener('click', () => {
@@ -111,7 +97,7 @@ generateQuestionsBtn.addEventListener('click', () => {
 
 for (let i = 0; i < answers.length; i++) {
      answers[i].addEventListener('click', (event) => {
-          if (event.target.textContent === filterQuestions[questionId].rightAnswer) {
+          if (event.target.id === filterQuestions[questionId].rightAnswer) {
                plusResultText.textContent = `Правильных ответов: ${++plusResult} `;
                event.target.style.backgroundColor = 'green';
                questionId++;
@@ -123,7 +109,7 @@ for (let i = 0; i < answers.length; i++) {
                questionId++;
           }
      });
-}
+};
 
 nextQuestion.addEventListener('click', changeAnswers);
 
